@@ -7,7 +7,8 @@ export type ObjectMap = {
 
 export default class ScaliConfigurationFile extends ScaliFile {
     protected path: string = this.getRootPath() + '/scali-config.json';
-    private content?: ObjectMap;
+    private content?: string;
+    private attributesJSON?: ObjectMap;
 
     public getPath(): string {
         return this.path;
@@ -33,10 +34,22 @@ export default class ScaliConfigurationFile extends ScaliFile {
         if (! this.content)
             this.setContent();
         
-        return this.content!;
+        return this.attributesJSON!;
+    }
+
+    public mountAttributes(): void {
+        this.setContent();
     }
 
     private setContent(): void {
-        this.content = ExtractContent.extract(this);
+        this.attributesJSON = JSON.parse(this.extractRawContent());
+    }
+
+    private extractRawContent() {
+        return this.content = ExtractContent.extract(this);
+    }
+
+    public attributes(attrName: string) {
+        return this.attributesJSON?.[attrName];
     }
 }

@@ -5,7 +5,7 @@ export module ScaliFramework {
     export class Scali {
         private config?: Config;
 
-        constructor (public args: string[]) {
+        constructor (private args: string[]) {
             this.mount();
         }
 
